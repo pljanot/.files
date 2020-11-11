@@ -1,0 +1,8 @@
+#!/bin/bash
+alias gph="git push -u origin HEAD"
+alias gpm="git push origin master"
+alias gld='git log --pretty=format:"%h %ad %s" --date=short --all'
+alias glg='git log --graph --oneline --decorate --all'
+
+function gca() { git commit -am '$1'; }
+function gcp() { git commit -am \"$1\" && git push; }
