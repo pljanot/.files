@@ -50,4 +50,16 @@ set completeopt=menuone,noinsert,noselect
 " " Avoid showing message extra message when using completion
 set shortmess+=c
 
+let mapleader = " "
+
+" Better clipboard integration
+if exists('$TMUX')
+  vnoremap <leader>y "ry :call system('xclip -selection clipboard', @r)<CR>
+  nnoremap <leader>p :let @r=system('xclip -selection clipboard -o')<CR>"rp
+else
+  vnoremap <leader>y "+y
+  nnoremap <leader>p "+p
+endif
+
+
 
