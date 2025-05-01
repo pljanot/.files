@@ -1,11 +1,11 @@
 [Unit]
-Description=Igk vpn service
+Description=Corporate vpn service
 After=network.target
 StartLimitIntervalSec=0
 [Service]
 ExecReload=/bin/kill -HUP $MAINPID
-ExecStart=/usr/sbin/openvpn --config igk-pf1-TCP4-443-pjanota.ovpn
-WorkingDirectory=/home/pljanot/openvpn-2.4.6/igk-pf1-TCP4-443-pjanota
+ExecStart=/usr/sbin/openvpn --config corporate.ovpn
+WorkingDirectory=/$HOME/openvpn-2.4.6/corporate-pf1
 
 [Install]
 WantedBy=multi-user.target
