@@ -1,0 +1,11 @@
+Host *
+    ServerAliveInterval 60
+    ServerAliveCountMax 3
+    TCPKeepAlive yes
+
+Host {host.friendly.name}
+  HostName {host.adr}
+  Port {host.port} 
+  User {host.user}
+# IdentityFile
+

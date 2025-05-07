@@ -4,7 +4,6 @@ if empty(glob('~/.vim/autoload/plug.vim'))
 	    autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
 endif
 
-
 " Disable annoying beeping
 set noerrorbells
 set vb t_vb=
@@ -43,7 +42,7 @@ set background=dark
 " Use <Tab> and <S-Tab> to navigate through popup menu
 inoremap <expr> <Tab>   pumvisible() ? "\<C-n>" : "\<Tab>"
 inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
-"
+
 " " Set completeopt to have a better completion experience
 set completeopt=menuone,noinsert,noselect
 "
@@ -60,6 +59,3 @@ else
   vnoremap <leader>y "+y
   nnoremap <leader>p "+p
 endif
-
-
-
