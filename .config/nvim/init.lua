@@ -155,6 +155,9 @@ vim.opt.confirm = true
 -- [[ Basic Keymaps ]]
 --  See `:help vim.keymap.set()`
 
+vim.keymap.set("n", "<leader>g", "<cmd>Git<CR>", { desc = "Open Fuggitive Git" })
+vim.keymap.set("n", "<leader>e", "<cmd>Oil<CR>", { desc = "Open Oil Parent Dir" })
+
 -- Clear highlights on search when pressing <Esc> in normal mode
 --  See `:help hlsearch`
 vim.keymap.set("n", "<Esc>", "<cmd>nohlsearch<CR>")
@@ -194,6 +197,19 @@ vim.keymap.set("n", "<C-k>", "<C-w><C-k>", { desc = "Move focus to the upper win
 -- [[ Basic Autocommands ]]
 --  See `:help lua-guide-autocommands`
 
+-- make jenkinsfile as groovy
+vim.api.nvim_create_autocmd({ "BufRead", "BufNewFile" }, {
+	pattern = "*.jenkins",
+	callback = function()
+		vim.bo.filetype = "groovy"
+	end,
+})
+
+vim.filetype.add({
+	pattern = {
+		[".*/%.github[%w/]+workflows[%w/]+.*%.ya?ml"] = "yaml.github",
+	},
+})
 -- Highlight when yanking (copying) text
 --  Try it with `yap` in normal mode
 --  See `:help vim.highlight.on_yank()`
@@ -229,17 +245,17 @@ vim.opt.rtp:prepend(lazypath)
 --
 -- NOTE: Here is where you install your plugins.
 require("lazy").setup({
-{
-  'stevearc/oil.nvim',
-  ---@module 'oil'
-  ---@type oil.SetupOpts
-  opts = {},
-  -- Optional dependencies
-  dependencies = { { "echasnovski/mini.icons", opts = {} } },
-  -- dependencies = { "nvim-tree/nvim-web-devicons" }, -- use if you prefer nvim-web-devicons
-  -- Lazy loading is not recommended because it is very tricky to make it work correctly in all situations.
-  lazy = false,
-},
+	{
+		"stevearc/oil.nvim",
+		---@module 'oil'
+		---@type oil.SetupOpts
+		opts = {},
+		-- Optional dependencies
+		dependencies = { { "echasnovski/mini.icons", opts = {} } },
+		-- dependencies = { "nvim-tree/nvim-web-devicons" }, -- use if you prefer nvim-web-devicons
+		-- Lazy loading is not recommended because it is very tricky to make it work correctly in all situations.
+		lazy = false,
+	},
 	-- NOTE: Plugins can be added with a link (or for a github repo: 'owner/repo' link).
 	{
 		"vimichael/floatingtodo.nvim",
@@ -252,7 +268,7 @@ require("lazy").setup({
 	},
 	"tpope/vim-sleuth", -- Detect tabstop and shiftwidth automatically
 	"tpope/vim-fugitive", -- Fugitive is the premier Vim plugin for Git.
-	"tpope/vim-rhubarb", -- If fugitive.vim is the Git, rhubarb.vim is the Hub. 
+	"tpope/vim-rhubarb", -- If fugitive.vim is the Git, rhubarb.vim is the Hub.
 
 	-- NOTE: Plugins can also be added by using a table,
 	-- with the first argument being the link and the following
@@ -445,10 +461,7 @@ require("lazy").setup({
 			-- Slightly advanced example of overriding default behavior and theme
 			vim.keymap.set("n", "<leader>/", function()
 				-- You can pass additional configuration to Telescope to change the theme, layout, etc.
-				builtin.current_buffer_fuzzy_find(require("telescope.themes").get_dropdown({
-					winblend = 10,
-					previewer = false,
-				}))
+				builtin.current_buffer_fuzzy_find()
 			end, { desc = "[/] Fuzzily search in current buffer" })
 
 			-- It's also possible to pass additional configuration options.
@@ -699,6 +712,41 @@ require("lazy").setup({
 				-- But for many setups, the LSP (`ts_ls`) will work just fine
 				-- ts_ls = {},
 				--
+				gh_actions_ls = {
+					cmd = { "gh-actions-language-server", "--stdio" },
+					filetypes = { "yaml.github" },
+					single_file_support = true,
+					capabilities = {
+						workspace = {
+							didChangeWorkspaceFolders = {
+								dynamicRegistration = true,
+							},
+						},
+					},
+				},
+				pylsp = {
+					settings = {
+						pylsp = {
+							plugins = {
+								pycodestyle = {
+									enabled = true,
+									ignore = { "E501" },
+									maxLineLength = 120,
+								},
+							},
+						},
+					},
+				},
+
+				ansiblels = {
+					settings = {
+						ansible = {
+							validation = {
+								enabled = false,
+							},
+						},
+					},
+				},
 
 				lua_ls = {
 					-- cmd = { ... },
@@ -815,12 +863,12 @@ require("lazy").setup({
 					-- `friendly-snippets` contains a variety of premade snippets.
 					--    See the README about individual language/framework/plugin snippets:
 					--    https://github.com/rafamadriz/friendly-snippets
-					-- {
-					--   'rafamadriz/friendly-snippets',
-					--   config = function()
-					--     require('luasnip.loaders.from_vscode').lazy_load()
-					--   end,
-					-- },
+					{
+						"rafamadriz/friendly-snippets",
+						config = function()
+							require("luasnip.loaders.from_vscode").lazy_load()
+						end,
+					},
 				},
 				opts = {},
 			},
@@ -830,6 +878,8 @@ require("lazy").setup({
 		--- @type blink.cmp.Config
 		opts = {
 			keymap = {
+				["<Tab>"] = { "select_next", "snippet_forward", "fallback" },
+				["<CR>"] = { "select_and_accept", "fallback" },
 				-- 'default' (recommended) for mappings similar to built-in completions
 				--   <c-y> to accept ([y]es) the completion.
 				--    This will auto-import if your LSP supports it.
@@ -852,11 +902,9 @@ require("lazy").setup({
 				--
 				-- See :h blink-cmp-config-keymap for defining your own keymap
 				preset = "default",
-
 				-- For more advanced Luasnip keymaps (e.g. selecting choice nodes, expansion) see:
 				--    https://github.com/L3MON4D3/LuaSnip?tab=readme-ov-file#keymaps
 			},
-
 			appearance = {
 				-- 'mono' (default) for 'Nerd Font Mono' or 'normal' for 'Nerd Font'
 				-- Adjusts spacing to ensure icons are aligned
@@ -1045,5 +1093,4 @@ require("lazy").setup({
 -- The line beneath this is called `modeline`. See `:help modeline`
 -- vim: ts=2 sts=2 sw=2 et
 -- Lua file (like init.lua)
--- vim: ts=2 sts=2 sw=2 et
-
+-- vim: ts=2 sjts=2 sw=2 et
