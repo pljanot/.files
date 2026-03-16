@@ -264,6 +264,10 @@ require("lazy").setup({
 				target_file = "~/notes/todo.md",
 				border = "single", -- single, rounded, etc.
 			})
+			vim.keymap.set("n", "-", "<CMD>Oil<CR>", { desc = "Open parent directory" })
+			vim.keymap.set("n", "<space>-", function()
+				require("oil").toggle_float(vim.fn.expand("%:h"))
+			end)
 		end,
 	},
 	"tpope/vim-sleuth", -- Detect tabstop and shiftwidth automatically
