@@ -12,6 +12,13 @@
         "ghcr.io/sooperset/mcp-atlassian:latest"
       ],
       "env": {}
+    },
+    "jenkins": {
+      "type": "http",
+      "url": "https://<jenkins-addresse>/mcp-server/mcp",
+      "headers": {
+        "Authorization": "Basic <user:pass b64>"
+      }
     }
   }
 }
