@@ -17,7 +17,8 @@
       "type": "http",
       "url": "https://<jenkins-addresse>/mcp-server/mcp",
       "headers": {
-        "Authorization": "Basic <user:pass b64>"
+        "Authorization": "Basic <user:pass b64>",
+        "Accept": "text/event-stream, application/json"
       }
     }
   }
