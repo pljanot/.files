@@ -31,3 +31,9 @@ Nvim init.lua small modifications
 		end,
 	},
 ```
+---
+# Claude Tutorials [mcp]
+* Jira-mcp [https://adamgradzki.com/jira-claude-code-integration.html]
+* Jenkins Mcp [https://plugins.jenkins.io/mcp-server/]
+
++ mcp -> .claude.json (global cfg) file [.claude.json]

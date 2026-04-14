@@ -1,0 +1,25 @@
+{
+  "mcpServers": {
+    "mcp-atlassian": {
+      "type": "stdio",
+      "command": "docker",
+      "args": [
+        "run",
+        "--rm",
+        "-i",
+        "--env-file",
+        "/home/pljanot/.config/mcp-atlassian.env",
+        "ghcr.io/sooperset/mcp-atlassian:latest"
+      ],
+      "env": {}
+    },
+    "jenkins": {
+      "type": "http",
+      "url": "https://<jenkins-addresse>/mcp-server/mcp",
+      "headers": {
+        "Authorization": "Basic <user:pass b64>",
+        "Accept": "text/event-stream, application/json"
+      }
+    }
+  }
+}
